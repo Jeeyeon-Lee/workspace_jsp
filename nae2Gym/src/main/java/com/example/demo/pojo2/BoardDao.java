@@ -34,7 +34,7 @@ public class BoardDao {
 			logger.info(bList.toString());
 		} catch (Exception e) {
 			logger.info(e.toString());
-		}		
+		}		 
 		return bList;
 	}
 
@@ -72,7 +72,8 @@ public class BoardDao {
 		sqlSessionFactory = MyBatisCommonFactory.getSqlSessionFactory();
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
-			result = sqlSession.insert("boardDelete", pMap);			
+			int b_no = Integer.parseInt(pMap.get("b_no").toString());
+			result = sqlSession.delete("boardDelete",b_no);
 			sqlSession.commit();//빼먹으면 물리적인테이블 반영안됨
 		} catch (Exception e) {
 			logger.info(e.toString());

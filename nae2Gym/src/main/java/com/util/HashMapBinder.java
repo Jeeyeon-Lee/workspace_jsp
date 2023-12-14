@@ -15,7 +15,7 @@ public class HashMapBinder {
 	Logger logger = Logger.getLogger(HashMapBinder.class);
 	HttpServletRequest req = null;
 	MultipartRequest multi  = null;
-	String realFolder = "D:\\workspace_jsp\\nae2Gym\\src\\main\\webapp\\pds";
+	String realFolder = "/Users/jyahn/dev/workspace/workspace_jsp/nae2Gym/src/main/webapp/pds";
 	String encType = "utf-8";
 	int maxSize = 5*1024*1024;	
 	public HashMapBinder(HttpServletRequest req) {
@@ -26,19 +26,20 @@ public class HashMapBinder {
 	public void multiBind(Map<String,Object> pMap) {
 		pMap.clear();//기존에 들어있는 정보는 비운다 - 초기화 연관된 행동
 		try {
+			//첨부파일에대한 업로드가 되는 지점
 			multi = new MultipartRequest(req, realFolder, maxSize,  encType, new DefaultFileRenamePolicy());
 		} catch (Exception e) {
 			logger.info(e.toString());
 		}
-		//첨부파일이 아닌  다른 정보들에 대해서도 담아준다
-		Enumeration<String> em = req.getParameterNames();
+		//첨부파일이 아닌  다른 정보들에 대해서도 담아준다 - enctype=multipart/form-data일때
+		Enumeration<String> em = multi.getParameterNames();
 		while(em.hasMoreElements()) {
 			//키값 꺼내기
 			String key = em.nextElement();//n_title, n_content, n_writer
-			pMap.put(key, req.getParameter(key));
+			pMap.put(key, multi.getParameter(key));
 		}////////////// end of while		
+		logger.info(pMap.toString());
 		
-		//첨부파일에대한 처리
 		Enumeration<String> files = multi.getFileNames();
 		String fullPah = null;//파일 정보에 대한 전체경로
 		String filename = null;//파일이름
@@ -50,13 +51,12 @@ public class HashMapBinder {
 			while(files.hasMoreElements()) {
 				String fname = files.nextElement();
 				filename = multi.getFilesystemName(fname);
-				pMap.put("bs_file", filename);//avartar.png
+				pMap.put("b_file", filename);//avartar.png
 				//File객체 생성하기
 				file = new File(realFolder+"\\"+filename);
 			}		
 		}//////////// end of if
 	}/////////////// end of multiBind
-		
 	//메소드 설계시 리턴타입이 아닌 파라미터 자리를 통해서 값을 전달하는 방법 소개
 	//사용자가 입력한 값을 담아 맵이 외부 클래스에서 인스턴스화 되어 넘어오니까
 	//초기화 처리 후 사용함
@@ -64,7 +64,7 @@ public class HashMapBinder {
 	 * 
 	 * @param pMap -  필요한 클래스 주입 - 선언자리이지 생성자리 아님
 	 *****************************************************************/
-	public void bind(Map<String,Object> pMap) {
+	public void bind(Map<String,Object> pMap) { //파라미터 값은 boardController에서 주입해줌 
 		pMap.clear();
 		//<input type="text" name="n_title">
 		//<input type="text" name="n_content">

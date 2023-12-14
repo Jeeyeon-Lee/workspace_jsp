@@ -19,8 +19,8 @@
 		          ,  b_writer = #{b_writer}
 		  where b_no = #{b_no}
 	</update>
-	<delete id="boardDelete" parameterType="map">
-		delete from notice where n_no = #{b_no}  	
+	<delete id="boardDelete" parameterType="int">
+		delete from board where b_no = #{value}  	
 	</delete>
 	<select id="boardList" parameterType="map"  resultType = "map">
 		select b_no, b_title, b_content, b_writer, b_hit, NVL(b_file, '없음') b_file from board

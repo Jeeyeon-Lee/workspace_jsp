@@ -68,7 +68,7 @@ public class ActionServlet extends HttpServlet {
 				//치환을 한번더 함
 				String path = pageMove[1];// board/boardList
 				if("redirect".equals(pageMove[0])) {
-					res.sendRedirect("/"+path+".jsp");//board/boardList.jsp
+					res.sendRedirect(path);//board/boardList.jsp
 				}//end of sendRedirect
 				else if("forward".equals(pageMove[0])) {
 					RequestDispatcher view = req.getRequestDispatcher("/"+path+".jsp");

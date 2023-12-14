@@ -1,22 +1,16 @@
 package com.example.demo.pojo2;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import com.example.demo.pojo1.NoticeController;
-import com.example.demo.pojo1.NoticeLogic;
 /*
  * upmu[] -  내려갈 때 -> ActionServlet -> BoardController로 연결될 때
  * -> 개선점(1-3버전) -> spring -> XXXHandlerMapping -> BoardController 에서 부터 메소드를 쪼갤 수 는 없나? -> 현재는 if문으로 되어있어서 가독성떨어짐, 재사용성 떨어짐
@@ -33,9 +27,6 @@ import com.example.demo.pojo1.NoticeLogic;
  */
 //@Controller - 스프링에서는 클래스 사이의 결합도를 낮추기 위해 상속(결합도가 높아지니까....)을 포기하였다
 //@RequestMapping(/notice/*) - 2번 URL매핑
-import com.google.gson.Gson;
-import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.util.HashMapBinder;
 public class BoardController implements Controller {
 	Logger logger = Logger.getLogger(BoardController.class);
@@ -56,6 +47,8 @@ public class BoardController implements Controller {
 			logger.info("boardList");
 			List<Map<String ,Object>> bList = null;//nList.size()가 n개 
 			// NoticeLogic의 메소드 호출 - 객체주입 - 내가(책임) 아님 스프링(제어역전)
+			//첨부파일 포함된 post 방식일 때만 !! get은 무조건 첨부파일 안 됨!! 왜/? 
+			//포스트 방식은 매번 동일한 url 요청을 해도 무조건 서버를 경유한다!! 
 			hmb.bind(pMap);  
 			bList = bLogic.boardList(pMap);      
 			//원본에다가 담아 두자
@@ -81,10 +74,11 @@ public class BoardController implements Controller {
 		//등록일때 - post방식 -insert:1(수정성공) or 0(수정안됨)
 		//jsp - 입력 - action(insert) - 1 - 성공 - action(select) - jsp
 		else if("boardInsert".equals(upmu[1])) {//insert
-			logger.info("boardInsert");
+			logger.info("C-boardInsert");
 			int result = 0;
-			hmb.bind(pMap);
+			hmb.multiBind(pMap);
 			result = bLogic.boardInsert(pMap);
+			logger.info(result);
 			if(result == 1) {//글등록 성공했을때
 				path="redirect:/board/boardList.gd2";//jsp --(redirect)---->boardInsert.gd2 -----(redirect)------> boardList.gd2 --(forward)---> jsp
 			}else {
@@ -109,8 +103,8 @@ public class BoardController implements Controller {
 		
 		//삭제일때 - delete방식 - 스프링수업일땐  - delete:1(수정성공) or 0(수정안됨)
 
-		else if("noticeDelete".equals(upmu[1])) {//delete
-			logger.info("noticeDelete");
+		else if("boardDelete".equals(upmu[1])) {//delete
+			logger.info("boardDelete");
 			int result = 0;
 			hmb.bind(pMap);
 			result = bLogic.boardDelete(pMap);
