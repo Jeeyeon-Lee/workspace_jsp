@@ -80,7 +80,7 @@ public class ActionServlet extends HttpServlet {
 					RequestDispatcher view = req.getRequestDispatcher("/WEB-INF/jsp/"+path+".jsp");
 					view.forward(req, res);					
 				}//배포 위치가 WEB-INF/아래 인경우
-			}//pageMove배열이 null이 아닌ㄱㅇ우
+			}//pageMove배열이 null이 아닌 경s우
 		}// end of if
 	}// end of doService
 	@Override

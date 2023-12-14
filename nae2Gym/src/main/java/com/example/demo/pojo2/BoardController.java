@@ -74,7 +74,7 @@ public class BoardController implements Controller {
 		//등록일때 - post방식 -insert:1(수정성공) or 0(수정안됨)
 		//jsp - 입력 - action(insert) - 1 - 성공 - action(select) - jsp
 		else if("boardInsert".equals(upmu[1])) {//insert
-			logger.info("C-boardInsert");
+			logger.info("boardInsert");
 			int result = 0;
 			hmb.multiBind(pMap);
 			result = bLogic.boardInsert(pMap);

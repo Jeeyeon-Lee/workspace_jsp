@@ -12,7 +12,7 @@
 	//1(26,25,24,23,22) 2(21,20,19,18,17) 3(16,15,14,13,12) > 4(11) 5 6
 	
 	//한 페이지에 몇개씩 뿌릴거야?
-	int numPerPage = 3;
+	int numPerPage = 10;
 	int nowPage = 0;
 	if(request.getParameter("nowPage")!=null){
 		nowPage = Integer.parseInt(request.getParameter("nowPage"));

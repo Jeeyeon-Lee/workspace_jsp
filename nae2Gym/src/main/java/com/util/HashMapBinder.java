@@ -15,7 +15,7 @@ public class HashMapBinder {
 	Logger logger = Logger.getLogger(HashMapBinder.class);
 	HttpServletRequest req = null;
 	MultipartRequest multi  = null;
-	String realFolder = "/Users/jyahn/dev/workspace/workspace_jsp/nae2Gym/src/main/webapp/pds";
+	String realFolder = "Users\\jyahn\\dev\\workspace\\workspace_jsp\\nae2Gym\\src\\main\\webapp\\pds"; // 절대경로.	
 	String encType = "utf-8";
 	int maxSize = 5*1024*1024;	
 	public HashMapBinder(HttpServletRequest req) {
